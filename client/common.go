@@ -125,8 +125,16 @@ func (p *Payload) Empty() bool {
 // ------------------------------------------------------------------
 
 // GetHeaders gets the headers required for a GET request
-func GetHeaders(tr authorisation.TokenRetriever, useStableAPI bool, etag, lastModified string) map[string]string {
-	headers := authorisation.Headers(tr, useStableAPI)
+func GetHeaders(
+	tr authorisation.TokenRetriever,
+	useStableAPI bool,
+	etag, lastModified string,
+) (map[string]string, error) {
+	headers, err := authorisation.Headers(tr, useStableAPI)
+	if err != nil {
+		return nil, err
+	}
+
 	if etag != "" {
 		headers["If-None-Match"] = etag
 	}
@@ -134,12 +142,12 @@ func GetHeaders(tr authorisation.TokenRetriever, useStableAPI bool, etag, lastMo
 		headers["If-Modified-Since"] = lastModified
 	}
 
-	return headers
+	return headers, nil
 }
 
 // ------------------------------------------------------------------
 
 // PostHeaders gets the headers required for a POST request
-func PostHeaders(tr authorisation.TokenRetriever, useStableAPI bool) map[string]string {
+func PostHeaders(tr authorisation.TokenRetriever, useStableAPI bool) (map[string]string, error) {
 	return authorisation.Headers(tr, useStableAPI)
 }

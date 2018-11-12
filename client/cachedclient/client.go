@@ -78,7 +78,11 @@ func (c *PickledCachedClient) PostWithContext(
 	data map[string]string,
 ) (int, error) {
 
-	headers := client.PostHeaders(c.APIToken, useStableAPI)
+	headers, err := client.PostHeaders(c.APIToken, useStableAPI)
+	if err != nil {
+		return 0, err
+	}
+
 	// url = c.makeURL(url, kwds...)
 	jsonStr, err := json.Marshal(data)
 	if err != nil {
@@ -132,7 +136,11 @@ func (c *PickledCachedClient) PatchWithContext(
 	data map[string]string,
 ) (int, error) {
 
-	headers := client.PostHeaders(c.APIToken, useStableAPI)
+	headers, err := client.PostHeaders(c.APIToken, useStableAPI)
+	if err != nil {
+		return 0, err
+	}
+
 	// url = c.makeURL(url, kwds...)
 	jsonStr, err := json.Marshal(data)
 	if err != nil {
@@ -204,7 +212,11 @@ func (c *PickledCachedClient) GetWithContext(
 		req = req.WithContext(ctx)
 	}
 
-	headers := client.GetHeaders(c.APIToken, useStableAPI, etag, last)
+	headers, err := client.GetHeaders(c.APIToken, useStableAPI, etag, last)
+	if err != nil {
+		return &client.Page{URL: url, Err: err}
+	}
+
 	for key, val := range headers {
 		req.Header.Set(key, val)
 	}
