@@ -194,7 +194,7 @@ func (c *PickledCachedClient) GetWithContext(
 	useStableAPI bool,
 ) *client.Page {
 
-	logging.Info("GET", logging.F("url", url))
+	// logging.Info("GET", logging.F("url", url))
 
 	entry := [2]string{"url", url}
 	input := [][2]string{entry}

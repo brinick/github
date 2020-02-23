@@ -99,10 +99,10 @@ type CommitStatus struct {
 // can be used for updating the parent commit in the repository
 func (cs CommitStatus) toDict() map[string]string {
 	return map[string]string{
-		"State":       cs.State,
-		"TargetURL":   cs.TargetURL,
-		"Description": cs.Description,
-		"Context":     cs.Context,
+		"state":       cs.State,
+		"target_url":  cs.TargetURL,
+		"description": cs.Description,
+		"context":     cs.Context,
 	}
 }
 

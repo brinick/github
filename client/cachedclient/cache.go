@@ -132,8 +132,6 @@ func (pc PickledCache) Save() error {
 			"Unable to save cache data",
 			logging.F("err", err),
 		)
-	} else {
-		logging.Debug("Wrote cache data file", logging.F("path", pc.Path))
 	}
 	return err
 }

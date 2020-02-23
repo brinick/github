@@ -12,6 +12,7 @@ import (
 
 // ------------------------------------------------------------------
 
+/*
 type BaseRepoer interface {
 	Path() string
 	FullPath() string
@@ -39,7 +40,7 @@ type Repoer interface {
 	BranchesGetter
 	RepoCollaborator
 }
-
+*/
 // ------------------------------------------------------------------
 
 // Repository is a Github repo
@@ -56,6 +57,8 @@ func NewRepo(owner, name string) *Repository {
 	}
 }
 
+// NewRepoFromPath creates a Repository object
+// based on the Github path "owner/name"
 func NewRepoFromPath(path string) *Repository {
 	tokens := strings.Split(path, "/")
 	if len(tokens) != 2 {
@@ -66,10 +69,12 @@ func NewRepoFromPath(path string) *Repository {
 	return NewRepo(owner, name)
 }
 
+// Owner returns the owner of this Github repository
 func (r Repository) Owner() string {
 	return r.owner
 }
 
+// Name returns the name of this Github repository
 func (r Repository) Name() string {
 	return r.name
 }
@@ -106,27 +111,6 @@ func (r Repository) PullsWithContext(
 	branch, state string,
 ) (*pullsIterator, error) {
 
-	/*
-		if !isLegalPullRequestState(state) {
-			illegalStateError := errors.New(
-				format("repo: unknown pull request state %s", state),
-			)
-			return nil, illegalStateError
-		}
-
-		exists, err := r.BranchExistsWithContext(ctx, branch)
-
-		if err != nil {
-			switch err {
-			case context.Canceled, context.DeadlineExceeded:
-				return nil, err
-			default:
-				str := format("%s: unknown branch %s", r.Path(), branch)
-				return nil, errors.New(str)
-			}
-		}
-
-	*/
 	url := r.toURL(format("pulls?base=%s&state=%s", branch, state))
 	it := PageIterator(url, HTTPClient())
 	return &pullsIterator{it: it}, nil

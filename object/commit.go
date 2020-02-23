@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/brinick/github/client"
-	_ "github.com/brinick/logging"
 	"time"
 )
 
@@ -157,16 +156,21 @@ func (c *RepoCommit) HasStatus(cs *CommitStatus) bool {
 	return false
 }
 
-// Create the status and return the integer status code
+// SetStatusWithContext creates the given status via HTTP POST,
+// returning the HTTP status code
 func (c *RepoCommit) SetStatusWithContext(ctx context.Context, status *CommitStatus) (int, error) {
 	if c.HasStatus(status) {
 		return 0, fmt.Errorf("Status already exists")
 	}
 
-	url := format("%s/%s/%s", c.URL, "statuses", c.SHA)
+	url := format("%s/%s", c.URL, "statuses")
+	fmt.Println(url)
+
 	return HTTPClient().PostWithContext(ctx, url, true, status.toDict())
 }
 
+// SetStatus creates the given status via HTTP POST,
+// returning the HTTP status code
 func (c *RepoCommit) SetStatus(status *CommitStatus) (int, error) {
 	return c.SetStatusWithContext(context.TODO(), status)
 }

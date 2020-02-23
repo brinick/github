@@ -94,7 +94,7 @@ func (i *pullsIterator) nextPage(ctx context.Context) ([]*PullRequest, error) {
 		// no more data
 		return nil, NoMorePages
 	} else if page.NoContent() {
-		noContent := fmt.Errorf(fmt.Sprintf("No content (status=%d)", page.StatusCode))
+		noContent := fmt.Errorf(fmt.Sprintf("No content (status %d)", page.StatusCode))
 		return nil, noContent
 	}
 
